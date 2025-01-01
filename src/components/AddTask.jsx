@@ -1,7 +1,29 @@
 import React from 'react'
 import { useState } from 'react'
-function AddTask() {
+function AddTask({taskList , setTaskList}) {
     const [addModal , setAddModal]=useState(false)
+    const [projectName , setProjectName]=useState("")
+    const [taskDescription , setTaskDescription]=useState("")
+    const handleInput= e=>{
+        const name = e.target.name;
+        const value = e.target.value;
+
+        if(name === "projectName"){
+            setProjectName(value);
+        }
+        if(name === "taskDescription") setTaskDescription(value)
+    }
+    const handleAdd= e =>{
+        e.preventDefault();
+        setTaskList(
+            [...taskList,{projectName,taskDescription}]
+        );
+        setAddModal(false)
+        setProjectName("")
+        setTaskDescription("")
+
+    }
+    // console.log(taskList);
   return (
     <>
     <button 
@@ -54,7 +76,13 @@ function AddTask() {
                     focus:bg-white'
                     type="text" 
                     id="project-name"
-                    placeholder='Project name' /> 
+                    name='projectName'
+                    placeholder='Project name'
+                    // value={projectName}
+                    value={projectName}
+                    onChange={handleInput}
+                    required
+                    /> 
                     </div>
                     <div>
                     <label 
@@ -72,12 +100,13 @@ function AddTask() {
                         rounded 
                         focus:outline-none
                         focus:bg-white'
-                        name="" id="task-desription"
+                        id="task-desription"
                         placeholder='Task Description'
                         rows="3"
-                        >
-
-                        </textarea>
+                        name="taskDescription"
+                        value={taskDescription}
+                        onChange={handleInput}
+                        />
                     </div>
 
                 </form>
@@ -88,6 +117,7 @@ function AddTask() {
                     text-white font-semibold
                     uppercase text-sm px-6 py-3 rounded 
                     hover:opacity-70'
+                    onClick={handleAdd}
                     >
                         Add Task
                     </button>
