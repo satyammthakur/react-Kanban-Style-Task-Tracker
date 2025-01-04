@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState , useEffect} from 'react'
-function EditTask({task , index , taskList , setTaskList}) {
+function EditTask({task , taskList , setTaskList}) {
     const [editModal , setEditModal]= useState(false)
     const [projectName , setProjectName]=useState("")
         const [taskDescription , setTaskDescription]=useState("")
@@ -20,10 +20,14 @@ function EditTask({task , index , taskList , setTaskList}) {
         const handleUpdate= e =>{
             e.preventDefault();
             let taskIdx = taskList.indexOf(task)
-            taskList.splice(taskList,1);
-            setTaskList(
-                [...taskList,{projectName,taskDescription}]
-            );
+            taskList.splice(taskList,1 ,{
+                projectName: projectName,
+                taskDescription: taskDescription,
+                timeStamp: task.timeStamp,
+                duration : task.duration
+            });
+            localStorage.setItem("taskList" , JSON.stringify(taskList));
+            window.location.reload()
             setEditModal(false)
         }
   return (
